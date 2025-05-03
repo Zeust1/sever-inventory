@@ -71,4 +71,21 @@ app.post('/add-product', async (req, res) => {
   });
 
 
+  app.post('/import-stock', async (req, res) => {
+    try {
+      const response = await axios.post(api, req.body, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      res.json(response.data);
+    } catch (error) {
+      console.error("Lỗi gửi OTP:", error.message);
+  
+      // Trả về lỗi đơn giản, tránh circular structure
+      res.status(400).json({
+        message: "Lỗi gửi dữ liệu đến App Script",
+        error: error.response?.data || error.message,
+      });
+    }
+  })
+
 app.listen(8080, () => { console.log('Sever is running!')})
